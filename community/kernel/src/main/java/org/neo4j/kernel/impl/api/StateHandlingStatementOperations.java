@@ -119,6 +119,14 @@ public class StateHandlingStatementOperations implements
         state.txState().nodeDoCreate( nodeId );
         return nodeId;
     }
+    
+    //HuangTask
+    public long nodeCreate( KernelStatement state, long timeid)
+    {
+    	long nodeId = storeLayer.reserveNode( );
+    	state.txState().nodeDoCreate( nodeId, timeid );
+    	return nodeId;
+    }
 
     @Override
     public void nodeDelete( KernelStatement state, long nodeId ) throws EntityNotFoundException
@@ -144,6 +152,17 @@ public class StateHandlingStatementOperations implements
         assertNodeExists( state, endNodeId );
         long id = storeLayer.reserveRelationship();
         state.txState().relationshipDoCreate( id, relationshipTypeId, startNodeId, endNodeId );
+        return id;
+    }
+    
+    //HuangTask
+    public long relationshipCreate( KernelStatement state, int relationshipTypeId, long startNodeId, long endNodeId, long timeid )
+            throws EntityNotFoundException
+    {
+        assertNodeExists( state, startNodeId );
+        assertNodeExists( state, endNodeId );
+        long id = storeLayer.reserveRelationship( );
+        state.txState().relationshipDoCreate( id, relationshipTypeId, startNodeId, endNodeId, timeid );
         return id;
     }
 
@@ -1461,4 +1480,16 @@ public class StateHandlingStatementOperations implements
         return legacyIndexStore.getAllRelationshipIndexNames();
     }
     // </Legacy index>
+    
+    //HuangTask
+    public long nodeGetTimeField( KernelStatement statement, long nodeid) throws EntityNotFoundException
+    {
+    	return storeLayer.nodeGetTimeField( nodeid );
+    }
+    
+    //HuangTask
+    public long relationshipGetTimeField( KernelStatement statement , long relid) throws EntityNotFoundException
+    {
+        return storeLayer.relationshipGetTimeField( relid );
+    }
 }

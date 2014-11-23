@@ -38,6 +38,9 @@ public final class NodeState extends PropertyContainerState
     private RelationshipChangesForNode relationshipsAdded;
     private RelationshipChangesForNode relationshipsRemoved;
     private Set<DiffSets<Long>> indexDiffs;
+    
+    //HuangTask TODO logically should be placed at the parent of this class but the name of the parent sound it shoudn't be placed there
+    private long timeField=-1;
 
     public interface Visitor extends PropertyContainerState.Visitor
     {
@@ -234,5 +237,17 @@ public final class NodeState extends PropertyContainerState
                 }
             }
         }
+    }
+    
+    //HuangTask
+    public void setTimeField( long timeid )
+    {
+    	timeField=timeid;
+    }
+    
+    //HuangTask
+    public long getTimeField()
+    {
+    	return timeField;
     }
 }

@@ -156,6 +156,13 @@ public class ConstraintEnforcingEntityOperations implements EntityOperations
     {
         return entityWriteOperations.relationshipCreate( statement, relationshipTypeId, startNodeId, endNodeId );
     }
+    
+    //HuangTask
+    public long relationshipCreate( KernelStatement statement, int relationshipTypeId, long startNodeId, long endNodeId, long timeid )
+            throws EntityNotFoundException
+    {
+        return entityWriteOperations.relationshipCreate( statement, relationshipTypeId, startNodeId, endNodeId, timeid );
+    }
 
     @Override
     public void relationshipDelete( KernelStatement state, long relationshipId ) throws EntityNotFoundException
@@ -375,6 +382,12 @@ public class ConstraintEnforcingEntityOperations implements EntityOperations
     {
         return entityWriteOperations.nodeCreate( statement );
     }
+    
+    //HuangTask
+    public long nodeCreate( KernelStatement statement , long timeid )
+    {
+    	return entityWriteOperations.nodeCreate(statement, timeid);
+    }
 
     @Override
     public PrimitiveLongIterator nodesGetAll( KernelStatement state )
@@ -405,5 +418,17 @@ public class ConstraintEnforcingEntityOperations implements EntityOperations
     {
         return entityReadOperations.expand( statement, inputCursor, nodeId, types, expandDirection,
                 relId, relType, direction, startNodeId, neighborNodeId );
+    }
+    
+    //HuangTask
+    public long nodeGetTimeField( KernelStatement state, long nodeId) throws EntityNotFoundException
+    {
+    	return entityReadOperations.nodeGetTimeField(state, nodeId);
+    }
+    
+    //HuangTask
+    public long relationshipGetTimeField( KernelStatement state, long relId) throws EntityNotFoundException
+    {
+        return entityReadOperations.relationshipGetTimeField( state, relId );
     }
 }

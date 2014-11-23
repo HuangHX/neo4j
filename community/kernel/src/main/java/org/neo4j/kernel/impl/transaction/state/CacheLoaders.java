@@ -41,7 +41,9 @@ public class CacheLoaders
                 try
                 {
                     NodeRecord record = nodeStore.getRecord( id );
-                    return record.isDense() ? new DenseNodeImpl( id ) : new NodeImpl( id );
+                    //HuangTask
+                    long timeid=record.getTimeField();
+                    return record.isDense() ? new DenseNodeImpl( id, timeid ) : new NodeImpl( id, timeid );
                 }
                 catch ( InvalidRecordException e )
                 {
@@ -62,7 +64,8 @@ public class CacheLoaders
                 try
                 {
                     RelationshipRecord record = relationshipStore.getRecord( id );
-                    return new RelationshipImpl( id, record.getFirstNode(), record.getSecondNode(), record.getType() );
+                    //HuangTask
+                    return new RelationshipImpl( id, record.getFirstNode(), record.getSecondNode(), record.getType(), record.getTimeField() );
                 }
                 catch ( InvalidRecordException e )
                 {

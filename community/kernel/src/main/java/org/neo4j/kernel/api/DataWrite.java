@@ -71,4 +71,11 @@ interface DataWrite
     Property relationshipRemoveProperty( long relationshipId, int propertyKeyId ) throws EntityNotFoundException;
 
     Property graphRemoveProperty( int propertyKeyId );
+    
+    //HuangTask
+    long nodeCreate(long timeid);
+    
+    //HuangTask
+    long relationshipCreate( int relationshipTypeId, long startNodeId, long endNodeId, long timeid )
+            throws RelationshipTypeIdNotFoundKernelException, EntityNotFoundException;
 }

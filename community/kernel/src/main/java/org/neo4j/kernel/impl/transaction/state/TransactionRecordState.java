@@ -219,9 +219,9 @@ public class TransactionRecordState implements RecordState
         prepared = true;
     }
 
-    public void relCreate( long id, int typeId, long startNodeId, long endNodeId )
+    public void relCreate( long id, int typeId, long startNodeId, long endNodeId, long timeid )
     {
-        context.relationshipCreate( id, typeId, startNodeId, endNodeId );
+        context.relationshipCreate( id, typeId, startNodeId, endNodeId, timeid );
     }
 
     public ArrayMap<Integer, DefinedProperty> relDelete( long relId )
@@ -385,10 +385,13 @@ public class TransactionRecordState implements RecordState
      *
      * @param nodeId The id of the node to create.
      */
-    public void nodeCreate( long nodeId )
+    
+    //HuangTask
+    public void nodeCreate( long nodeId , long timeid)
     {
         NodeRecord nodeRecord = context.getNodeRecords().create( nodeId, null ).forChangingData();
         nodeRecord.setInUse( true );
+        nodeRecord.setTimeField( timeid );
         nodeRecord.setCreated();
     }
 

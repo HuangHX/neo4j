@@ -68,8 +68,12 @@ public class NodeStoreFormat_v2_2 extends FixedSizeRecordStoreFormat<NodeRecord,
         private final static int LSB_LABELS     = 4 + NEXT_PROP_BASE;
         private final static int MSB_LABELS     = 4 + LSB_LABELS;
         private final static int EXTRA          = 1 + MSB_LABELS;
-
-        private final static int RECORD_SIZE = EXTRA + 1;
+        
+        //HuangTask
+        private final static int TIMEFIELD		=8+EXTRA;
+        
+        //HuangTask
+        private final static int RECORD_SIZE = TIMEFIELD + 1;
 
         @Override
         public String recordName()
@@ -112,6 +116,10 @@ public class NodeStoreFormat_v2_2 extends FixedSizeRecordStoreFormat<NodeRecord,
 
                 byte extra = record.isDense() ? (byte)1 : (byte)0;
                 cursor.putByte( offset + EXTRA, extra );
+                
+                //HuangTask
+                long timeid=record.getTimeField();
+                cursor.putLong(offset+TIMEFIELD, timeid);
             }
             else
             {
@@ -129,6 +137,8 @@ public class NodeStoreFormat_v2_2 extends FixedSizeRecordStoreFormat<NodeRecord,
             long lsbLabels = cursor.getUnsignedInt(offset + LSB_LABELS);
             long hsbLabels = cursor.getByte(offset + MSB_LABELS ) & 0xFF; // so that a negative byte won't fill the "extended" bits with ones
             byte extra     = cursor.getByte(offset + EXTRA);
+            //HuangTask
+            long timeid    = cursor.getLong(offset + TIMEFIELD);
 
             long relModifier = (inUseByte & 0xEL) << 31;
             long propModifier = (inUseByte & 0xF0L) << 28;
@@ -140,6 +150,9 @@ public class NodeStoreFormat_v2_2 extends FixedSizeRecordStoreFormat<NodeRecord,
             record.setNextProp( longFromIntAndMod( nextProp, propModifier ) );
             record.setInUse( (inUseByte & 0x1) == 1 );
             record.setLabelField( labels, Collections.<DynamicRecord>emptyList() );
+            
+            //HuangTask
+            record.setTimeField(timeid);
             return record;
         }
 

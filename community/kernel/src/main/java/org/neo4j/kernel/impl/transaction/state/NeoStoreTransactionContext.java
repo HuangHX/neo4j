@@ -82,9 +82,10 @@ public class NeoStoreTransactionContext
         return relationshipDeleter.relDelete( relId, recordChangeSet );
     }
 
-    public void relationshipCreate( long id, int typeId, long startNodeId, long endNodeId )
+    //HuangTask
+    public void relationshipCreate( long id, int typeId, long startNodeId, long endNodeId, long timeid )
     {
-        relationshipCreator.relationshipCreate( id, typeId, startNodeId, endNodeId, recordChangeSet );
+        relationshipCreator.relationshipCreate( id, typeId, startNodeId, endNodeId, recordChangeSet, timeid );
     }
 
     public ArrayMap<Integer, DefinedProperty>  getAndDeletePropertyChain( NodeRecord nodeRecord )

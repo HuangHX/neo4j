@@ -99,7 +99,9 @@ public class RelationshipLoader
         for ( RelationshipRecord rel : loadedRelationshipRecords )
         {
             long relId = rel.getId();
-            RelationshipImpl relImpl = getOrCreateRelationshipFromCache( relsList, rel, relId );
+            //HuangTask
+            long timeid = rel.getTimeField();
+            RelationshipImpl relImpl = getOrCreateRelationshipFromCache( relsList, rel, relId, timeid );
 
             getOrCreateRelationships( hasLoops, relImpl.getTypeId(), loadedRelationshipsOutputParameter )
                     .add( relId, dir );
@@ -119,8 +121,9 @@ public class RelationshipLoader
         return loadedRelIdArray;
     }
 
+    //HuangTask
     private RelationshipImpl getOrCreateRelationshipFromCache( List<RelationshipImpl> newlyCreatedRelationships,
-            RelationshipRecord rel, long relId )
+            RelationshipRecord rel, long relId, long timeid )
     {
         RelationshipImpl relImpl = relationshipCache.get( relId );
         if (relImpl != null)
@@ -129,7 +132,7 @@ public class RelationshipLoader
         }
 
         RelationshipImpl loadedRelImpl = new RelationshipImpl( relId, rel.getFirstNode(), rel.getSecondNode(),
-                rel.getType()  );
+                rel.getType(), timeid  );
         newlyCreatedRelationships.add( loadedRelImpl );
         return loadedRelImpl;
     }

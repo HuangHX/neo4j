@@ -141,4 +141,11 @@ public interface EntityReadOperations
                      /* Outputs */ NeoRegister.Relationship.Out relId, NeoRegister.RelType.Out relType,
                      Register.Object.Out<Direction> direction,
                      NeoRegister.Node.Out startNodeId, NeoRegister.Node.Out neighborNodeId );
+
+    
+    //HuangTask
+    public long nodeGetTimeField( KernelStatement state, long nodeId) throws EntityNotFoundException;
+    
+  //HuangTask
+    public long relationshipGetTimeField( KernelStatement state, long relId) throws EntityNotFoundException;
 }

@@ -173,11 +173,13 @@ public interface StoreReadLayer
      * Reserves a node id for future use.
      */
     long reserveNode();
+    
 
     /**
      * Reserves a relationship id for future use.
      */
     long reserveRelationship();
+    
 
     void releaseNode( long id );
 
@@ -193,4 +195,11 @@ public interface StoreReadLayer
     long countsForRelationship( int startLabelId, int typeId, int endLabelId );
 
     double indexUniqueValuesPercentage( IndexDescriptor descriptor ) throws IndexNotFoundKernelException;
+
+    //HuangTask
+    public long nodeGetTimeField( long nodeId ) throws EntityNotFoundException ;
+    
+    //HuangTask
+    public long relationshipGetTimeField( long relId ) throws EntityNotFoundException ;
+
 }

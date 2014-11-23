@@ -31,6 +31,9 @@ public class RelationshipRecord extends PrimitiveRecord
     private long secondNextRel = Record.NO_NEXT_RELATIONSHIP.intValue();
     private boolean firstInFirstChain = true;
     private boolean firstInSecondChain = true;
+    
+    //HuangTask
+    private long timeField = Record.NO_TIMEPROTERTY_FIELD.intValue();
 
     public RelationshipRecord( long id, long firstNode, long secondNode, int type )
     {
@@ -182,5 +185,17 @@ public class RelationshipRecord extends PrimitiveRecord
     public void setIdTo( PropertyRecord property )
     {
         property.setRelId( getId() );
+    }
+    
+    //HuangTask
+    public void setTimeField(long timeid)
+    {
+    	this.timeField=timeid;
+    }
+    
+    //HuangTask
+    public long getTimeField()
+    {
+    	return this.timeField;
     }
 }

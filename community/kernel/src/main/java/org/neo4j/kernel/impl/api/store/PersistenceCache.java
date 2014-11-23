@@ -167,13 +167,14 @@ public class PersistenceCache
             // expects. We can optimize later.
 
             @Override
-            public void visitCreatedNode( long id )
+            public void visitCreatedNode( long id , long timeid )
             {
                 NodeImpl node = nodeCache.getIfCached( id );
                 if ( node instanceof NodeImplReservation )
                 {
                     // Cache in the reservation
-                    nodeCache.put( node = new NodeImpl( id ), true );
+                	//HuangTask
+                    nodeCache.put( node = new NodeImpl( id, timeid ), true );
                 }
             }
 
@@ -506,9 +507,10 @@ public class PersistenceCache
         }
     }
 
-    public void reserveNode( long nodeId )
+    public void reserveNode( long nodeId, long timeid )
     {
-        nodeCache.put( new NodeImplReservation( nodeId ) );
+    	//HuangTask
+        nodeCache.put( new NodeImplReservation( nodeId, timeid ) );
     }
 
     public void releaseNode(long nodeId)
@@ -524,11 +526,25 @@ public class PersistenceCache
     {
         txState.accept( new VisitorAdapter()
         {
+        	//HuangTask
             @Override
-            public void visitCreatedNode( long id )
+            public void visitCreatedNode( long id , long timeid)
             {
                 nodeCache.remove( id );
             }
         } );
     }
+    
+    //HuangTask
+    public long nodeGetTimeField(long nodeid) throws EntityNotFoundException
+    {
+    	return getNode( nodeid ).getTimeid();
+    }
+    
+    //HuangTask
+    public long relationshipGetTimeField( long relId ) throws EntityNotFoundException 
+    {
+        return getRelationship( relId ).getTimeField();
+    }
+
 }

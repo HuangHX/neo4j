@@ -149,4 +149,15 @@ interface DataRead
                      /* Outputs */ NeoRegister.Relationship.Out relId, NeoRegister.RelType.Out relType,
                                    Register.Object.Out<Direction> direction,
                                    NeoRegister.Node.Out startNodeId, NeoRegister.Node.Out neighborNodeId );
+
+    //HuangTask
+    /**
+     * This method return the TimeFieldId of the certain node
+     * @throws EntityNotFoundException 
+     */
+    public long nodeGetTimeField(long nodeid) throws EntityNotFoundException;
+    
+    //HuangTask
+    public long relationshipGetTimeField( long relid ) throws EntityNotFoundException;
 }
+

@@ -1683,4 +1683,23 @@ public abstract class InternalAbstractGraphDatabase
             config.removeConfigurationChangeListener( listener );
         }
     }
+    
+    //HuangTask TODO
+    public Node createNode(long timeid)
+    {
+    	if(timeid==-1)
+    	{
+    		//HuangTask TODO the time granularity is depend on the OS.
+    		timeid=System.currentTimeMillis();
+    	}
+    	
+    	try(Statement statement = threadToTransactionBridge.instance())
+    	{
+    		return nodeManager.newNodeProxyById( statement.dataWriteOperations().nodeCreate( timeid ));
+    	}
+    	catch ( InvalidTransactionTypeKernelException e )
+        {
+            throw new ConstraintViolationException( e.getMessage(), e );
+        }
+    }
 }

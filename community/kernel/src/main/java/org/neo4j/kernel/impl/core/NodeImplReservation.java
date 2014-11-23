@@ -24,8 +24,9 @@ package org.neo4j.kernel.impl.core;
  */
 public class NodeImplReservation extends NodeImpl
 {
-    public NodeImplReservation( long id )
+	//HuangTask
+    public NodeImplReservation( long id ,long timeId )
     {
-        super( id );
+        super( id ,timeId);
     }
 }

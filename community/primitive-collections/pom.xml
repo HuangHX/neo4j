@@ -64,4 +64,5 @@ the relevant Commercial Agreement.
       <scope>test</scope>
     </dependency>
   </dependencies>
+  <groupId>org.neo4j</groupId>
 </project>

@@ -49,11 +49,12 @@ public class RelationshipStore extends AbstractRecordStore<RelationshipRecord> i
 
     public static final String TYPE_DESCRIPTOR = "RelationshipStore";
 
+    //HuangTask
     // record header size
     // directed|in_use(byte)+first_node(int)+second_node(int)+rel_type(int)+
     // first_prev_rel_id(int)+first_next_rel_id+second_prev_rel_id(int)+
-    // second_next_rel_id+next_prop_id(int)+first-in-chain-markers(1)
-    public static final int RECORD_SIZE = 34;
+    // second_next_rel_id+next_prop_id(int)+first-in-chain-markers(1)+timeField(long)
+    public static final int RECORD_SIZE = 34+8;
 
     public RelationshipStore(
             File fileName,
@@ -90,7 +91,8 @@ public class RelationshipStore extends AbstractRecordStore<RelationshipRecord> i
     @Override
     public int getRecordHeaderSize()
     {
-        return getRecordSize();
+    	//HuangTask not sure if should minus by 8
+        return getRecordSize()-8;
     }
 
     @Override
@@ -292,6 +294,10 @@ public class RelationshipStore extends AbstractRecordStore<RelationshipRecord> i
             cursor.putInt( (int) secondNextRel );
             cursor.putInt( (int) nextProp );
             cursor.putByte( extraByte );
+            
+            //HuangTask
+            long timeid = record.getTimeField();
+            cursor.putLong( timeid );
         }
         else
         {
@@ -358,6 +364,10 @@ public class RelationshipStore extends AbstractRecordStore<RelationshipRecord> i
         record.setFirstInSecondChain( (extraByte & 0x2) != 0 );
 
         record.setNextProp( longFromIntAndMod( nextProp, nextPropMod ) );
+        
+        //HuangTask
+        long timeid=cursor.getLong();
+        record.setTimeField( timeid );
         return inUse;
     }
 

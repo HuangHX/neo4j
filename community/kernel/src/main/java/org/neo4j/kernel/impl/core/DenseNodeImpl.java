@@ -30,9 +30,10 @@ import static org.neo4j.helpers.collection.IteratorUtil.iterator;
 
 public class DenseNodeImpl extends NodeImpl
 {
-    public DenseNodeImpl( long id )
+	//HuangTask
+    public DenseNodeImpl( long id, long timeId )
     {
-        super( id );
+        super( id,timeId );
     }
 
     @Override

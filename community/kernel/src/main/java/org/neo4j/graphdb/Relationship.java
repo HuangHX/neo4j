@@ -167,4 +167,7 @@ public interface Relationship extends PropertyContainer
      *         <code>null</code>
      */
     boolean isType( RelationshipType type );
+    
+    //HuangTask
+    long getTimeField();
 }

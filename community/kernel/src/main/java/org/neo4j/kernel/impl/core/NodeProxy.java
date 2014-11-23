@@ -717,4 +717,55 @@ public class NodeProxy implements Node
             }
         }, input ) );
     }
+    
+    //HuangTask
+    public long getTimeField()
+    {
+    	try( Statement statement = statementContextProvider.instance() ) 
+    	{
+    		try 
+    		{
+				return statement.readOperations().nodeGetTimeField(nodeId);
+			} 
+    		catch (EntityNotFoundException e)
+    		{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return 0;
+			}
+    	}
+    }
+    
+    //HuangTask
+    public Relationship createRelationshipTo( Node otherNode, RelationshipType type, long timeid)
+    {
+        if ( otherNode == null )
+        {
+            throw new IllegalArgumentException( "Other node is null." );
+        }
+        if( timeid == -1 )
+        {
+            timeid = System.currentTimeMillis();
+        }
+        try ( Statement statement = statementContextProvider.instance() )
+        {
+            int relationshipTypeId = statement.tokenWriteOperations().relationshipTypeGetOrCreateForName( type.name() );
+            return nodeLookup.getNodeManager().newRelationshipProxyById(
+                    statement.dataWriteOperations()
+                             .relationshipCreate( relationshipTypeId, nodeId, otherNode.getId(), timeid ) );
+        }
+        catch ( IllegalTokenNameException | RelationshipTypeIdNotFoundKernelException e )
+        {
+            throw new IllegalArgumentException( e );
+        }
+        catch ( EntityNotFoundException e )
+        {
+            throw new IllegalStateException( "Node[" + e.entityId() +
+                                             "] is deleted and cannot be used to create a relationship" );
+        }
+        catch ( InvalidTransactionTypeKernelException e )
+        {
+            throw new ConstraintViolationException( e.getMessage(), e );
+        }
+    }
 }

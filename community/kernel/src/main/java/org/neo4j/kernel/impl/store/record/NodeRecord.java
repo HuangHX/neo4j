@@ -37,6 +37,9 @@ public class NodeRecord extends PrimitiveRecord
     private Collection<DynamicRecord> dynamicLabelRecords = emptyList();
     private boolean isLight = true;
     private boolean dense;
+    
+    //HuangTask
+    private long timeProperty=Record.NO_TIMEPROTERTY_FIELD.intValue();
 
     public NodeRecord( long id )
     {
@@ -180,4 +183,15 @@ public class NodeRecord extends PrimitiveRecord
         this.dense = from.dense;
         this.setNextProp( from.getNextProp() );
     }
+    
+    //HuangTask
+	public long getTimeField() 
+	{
+		return timeProperty;
+	}
+	//HuangTask
+	public void setTimeField(long timeField) 
+	{
+		timeProperty=timeField;
+	}
 }

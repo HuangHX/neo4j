@@ -514,14 +514,16 @@ public class KernelTransactionImplementation implements KernelTransaction, TxSta
             {
                 txState.accept( new TxState.VisitorAdapter()
                 {
+                	//HuangTask
                     @Override
-                    public void visitCreatedNode( long id )
+                    public void visitCreatedNode( long id , long timeid )
                     {
                         storeLayer.releaseNode( id );
                     }
-
+                    
+                    //HuangTask
                     @Override
-                    public void visitCreatedRelationship( long id, int type, long startNode, long endNode )
+                    public void visitCreatedRelationship( long id, int type, long startNode, long endNode, long timeid )
                     {
                         storeLayer.releaseRelationship( id );
                     }
@@ -595,9 +597,9 @@ public class KernelTransactionImplementation implements KernelTransaction, TxSta
         }
 
         @Override
-        public void visitCreatedNode( long id )
+        public void visitCreatedNode( long id, long timeid )
         {
-            recordState.nodeCreate( id );
+            recordState.nodeCreate( id, timeid );
         }
 
         @Override
@@ -607,7 +609,7 @@ public class KernelTransactionImplementation implements KernelTransaction, TxSta
         }
 
         @Override
-        public void visitCreatedRelationship( long id, int type, long startNode, long endNode )
+        public void visitCreatedRelationship( long id, int type, long startNode, long endNode, long timeid )
         {
             try
             {
@@ -631,7 +633,7 @@ public class KernelTransactionImplementation implements KernelTransaction, TxSta
             }
 
             // record the state changes to be made to the store
-            recordState.relCreate( id, type, startNode, endNode );
+            recordState.relCreate( id, type, startNode, endNode, timeid );
         }
 
         @Override

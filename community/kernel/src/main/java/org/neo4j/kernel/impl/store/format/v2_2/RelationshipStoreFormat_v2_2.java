@@ -66,8 +66,11 @@ public class RelationshipStoreFormat_v2_2 extends FixedSizeRecordStoreFormat<Rel
         private final static int SECOND_NEXT_REL = 4 + SECOND_PREV_REL;
         private final static int NEXT_PROP       = 4 + SECOND_NEXT_REL;
         private final static int EXTRA           = 4 + NEXT_PROP;
+        
+        //HuangTask
+        private final static int TIMEFIELD 		 = 8 + EXTRA;
 
-        private final static int RECORD_SIZE = EXTRA + 1;
+        private final static int RECORD_SIZE = TIMEFIELD + 1;
 
         @Override
         public String recordName()
@@ -136,6 +139,10 @@ public class RelationshipStoreFormat_v2_2 extends FixedSizeRecordStoreFormat<Rel
                 cursor.putInt(  offset + SECOND_NEXT_REL, (int) secondNextRel );
                 cursor.putInt(  offset + NEXT_PROP      , (int) nextProp );
                 cursor.putByte( offset + EXTRA          , extraByte );
+                
+                //HuangTask
+                long timeid = record.getTimeField();
+                cursor.putLong(  offset + TIMEFIELD , timeid);
             }
             else
             {
@@ -167,6 +174,9 @@ public class RelationshipStoreFormat_v2_2 extends FixedSizeRecordStoreFormat<Rel
             long secondNextRel = cursor.getUnsignedInt( offset + SECOND_NEXT_REL );
             long nextProp      = cursor.getUnsignedInt( offset + NEXT_PROP );
             byte extraByte     = cursor.getByte( offset + EXTRA );
+            
+            //HuangTask
+            long timeid 	   = cursor.getLong( offset + TIMEFIELD );
 
             record.setFirstNode( longFromIntAndMod( firstNode, (inUseByte & 0xEL) << 31 ) );
             record.setSecondNode( longFromIntAndMod( secondNode, (typeInt & 0x70000000L) << 4 ) );
@@ -179,7 +189,9 @@ public class RelationshipStoreFormat_v2_2 extends FixedSizeRecordStoreFormat<Rel
             record.setFirstInFirstChain( (extraByte & 0x1) != 0 );
             record.setFirstInSecondChain( (extraByte & 0x2) != 0 );
             record.setNextProp( longFromIntAndMod( nextProp, (inUseByte & 0xF0L) << 28 ) );
-
+            //HuangTask
+            record.setTimeField( timeid );
+            
             return record;
         }
 

@@ -108,11 +108,13 @@ public interface TxState
 
     public interface Visitor
     {
-        void visitCreatedNode( long id );
+    	
+    	//HuangTask
+        void visitCreatedNode( long id , long timeid );
 
         void visitDeletedNode( long id );
 
-        void visitCreatedRelationship( long id, int type, long startNode, long endNode );
+        void visitCreatedRelationship( long id, int type, long startNode, long endNode, long timeid );
 
         void visitDeletedRelationship( long id, int type, long startNode, long endNode );
 
@@ -147,12 +149,13 @@ public interface TxState
         void visitCreatedNodeLegacyIndex( String name, Map<String, String> config );
 
         void visitCreatedRelationshipLegacyIndex( String name, Map<String, String> config );
+        
     }
 
     public static class VisitorAdapter implements Visitor
     {
         @Override
-        public void visitCreatedNode( long id )
+        public void visitCreatedNode( long id , long timeid)
         {   // Ignore
         }
 
@@ -162,7 +165,7 @@ public interface TxState
         }
 
         @Override
-        public void visitCreatedRelationship( long id, int type, long startNode, long endNode )
+        public void visitCreatedRelationship( long id, int type, long startNode, long endNode, long timeid )
         {   // Ignore
         }
 
@@ -246,6 +249,7 @@ public interface TxState
         {   // Ignore
 
         }
+       
     }
 
     boolean hasChanges();
@@ -256,8 +260,14 @@ public interface TxState
     // ENTITY RELATED
 
     void relationshipDoCreate( long id, int relationshipTypeId, long startNodeId, long endNodeId );
+    
+    //HuangTask
+    void relationshipDoCreate( long id, int relationshipTypeId, long startNodeId, long endNodeId, long timeid );
 
     void nodeDoCreate( long id );
+    
+    //HuangTask
+    void nodeDoCreate( long id, long timeid );
 
     DiffSets<Long> labelStateNodeDiffSets( int labelId );
 

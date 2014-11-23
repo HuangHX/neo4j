@@ -74,8 +74,9 @@ public class NodeStore extends AbstractRecordStore<NodeRecord> implements Store
 
     public static final String TYPE_DESCRIPTOR = "NodeStore";
 
-    // in_use(byte)+next_rel_id(int)+next_prop_id(int)+labels(5)+extra(byte)
-    public static final int RECORD_SIZE = 15;
+    //HuangTask
+    // in_use(byte)+next_rel_id(int)+next_prop_id(int)+labels(5)+extra(byte)+timeField(long)
+    public static final int RECORD_SIZE = 15+8;
 
     private DynamicArrayStore dynamicLabelStore;
 
@@ -116,7 +117,8 @@ public class NodeStore extends AbstractRecordStore<NodeRecord> implements Store
     @Override
     public int getRecordHeaderSize()
     {
-        return getRecordSize();
+    	//HuangTask not sure the HeaderSize need to be minus by 8;
+        return getRecordSize()-8;
     }
 
     public void ensureHeavy( NodeRecord node )
@@ -287,6 +289,9 @@ public class NodeStore extends AbstractRecordStore<NodeRecord> implements Store
 
             byte extra = record.isDense() ? (byte)1 : (byte)0;
             cursor.putByte( extra );
+            //HuangTask huangAdded
+            long timeField=record.getTimeField();
+            cursor.putLong( timeField );
         }
         else
         {
@@ -330,6 +335,8 @@ public class NodeStore extends AbstractRecordStore<NodeRecord> implements Store
         long hsbLabels = cursor.getByte() & 0xFF; // so that a negative byte won't fill the "extended" bits with ones.
         long labels = lsbLabels | (hsbLabels << 32);
         byte extra = cursor.getByte();
+        //HuangTask
+        long timeField=cursor.getLong();
         boolean dense = (extra & 0x1) > 0;
 
         record.setDense( dense );
@@ -337,6 +344,7 @@ public class NodeStore extends AbstractRecordStore<NodeRecord> implements Store
         record.setNextProp( longFromIntAndMod( nextProp, propModifier ) );
         record.setInUse( inUse );
         record.setLabelField( labels, Collections.<DynamicRecord>emptyList() );
+        record.setTimeField(timeField);
     }
 
     public DynamicArrayStore getDynamicLabelStore()

@@ -336,4 +336,21 @@ public class RelationshipProxy implements Relationship
     {
         statementContextProvider.assertInUnterminatedTransaction();
     }
+    
+    //HuangTask
+    public long getTimeField()
+    {
+        try ( Statement statement = statementContextProvider.instance() )
+        {
+            try
+            {
+                return statement.readOperations().relationshipGetTimeField( relId );
+            }
+            catch ( EntityNotFoundException e)
+            {
+                throw new NotFoundException(
+                        e.getUserMessage( new StatementTokenNameLookup( statement.readOperations() ) ), e );
+            }
+        }
+    }
 }

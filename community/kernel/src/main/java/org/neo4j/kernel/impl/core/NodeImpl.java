@@ -78,11 +78,16 @@ public class NodeImpl extends ArrayBasedPrimitive
      */
     private volatile RelationshipLoadingPosition relChainPosition;
     private final long id;
+    
+    //HuangTask
+    private final long timeId;
 
     // newNode will only be true for NodeManager.createNode
-    public NodeImpl( long id )
+    public NodeImpl( long id ,long timeId)
     {
         this.id = id;
+        //HuangTask
+        this.timeId=timeId;
     }
 
     @Override
@@ -702,5 +707,12 @@ public class NodeImpl extends ArrayBasedPrimitive
             int incoming = byType.length( DirectionWrapper.INCOMING );
             visitor.visitDegree( byType.getType(), outgoing, incoming );
         }
+    }
+    
+    
+    //HuangTask
+    public long getTimeid()
+    {
+    	return timeId;
     }
 }

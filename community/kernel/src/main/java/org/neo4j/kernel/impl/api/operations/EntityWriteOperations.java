@@ -31,7 +31,13 @@ public interface EntityWriteOperations
 
     long relationshipCreate( KernelStatement statement, int relationshipTypeId, long startNodeId, long endNodeId ) throws EntityNotFoundException;
 
+    //HuangTask
+    long relationshipCreate( KernelStatement statement, int relationshipTypeId, long startNodeId, long endNodeId, long timeid ) throws EntityNotFoundException;
+   
     long nodeCreate( KernelStatement statement );
+    
+    //HuangTask
+    long nodeCreate(KernelStatement state, long timeid);
 
     void nodeDelete( KernelStatement state, long nodeId ) throws EntityNotFoundException;
 
@@ -73,4 +79,5 @@ public interface EntityWriteOperations
             throws EntityNotFoundException;
 
     Property graphRemoveProperty( KernelStatement state, int propertyKeyId );
+    
 }

@@ -144,7 +144,10 @@ public final class TxStateImpl implements TxState
                 @Override
                 public void visitAdded( Long element )
                 {
-                    visitor.visitCreatedNode( element.longValue() );
+                	//HuangTask TODO not the most efficient way
+                	NodeState nodestate=getOrCreateNodeState( element );
+                	long timeid = nodestate.getTimeField();
+                    visitor.visitCreatedNode( element.longValue() , timeid );
                 }
             } );
         }
@@ -157,11 +160,13 @@ public final class TxStateImpl implements TxState
                 @Override
                 public void visitAdded( Long element )
                 {
+                    
+                    //HuangTask
                     // It's fine to call "getOrCreate" here since we only get callbacks for relationships
                     // that have been added to this state map.
                     RelationshipState relationshipState = getOrCreateRelationshipState( element.longValue() );
                     visitor.visitCreatedRelationship( element.longValue(), relationshipState.type(),
-                            relationshipState.startNode(), relationshipState.endNode() );
+                            relationshipState.startNode(), relationshipState.endNode(), relationshipState.timeField() );
                 }
             } );
         }
@@ -325,6 +330,7 @@ public final class TxStateImpl implements TxState
             {
                 visitor.visitNodeRelationshipChanges( nodeId, added, removed );
             }
+            
         };
     }
 
@@ -450,6 +456,14 @@ public final class TxStateImpl implements TxState
         addedAndRemovedNodes().add( id );
         hasChanges = true;
     }
+    
+    //HuangTask
+    public void nodeDoCreate( long id, long timeid )
+    {
+    	addedAndRemovedNodes().add( id );
+    	getOrCreateNodeState( id ).setTimeField( timeid );
+    	hasChanges=true;
+    }
 
     @Override
     public void nodeDoDelete( long nodeId )
@@ -492,6 +506,26 @@ public final class TxStateImpl implements TxState
         }
 
         getOrCreateRelationshipState( id ).setMetaData( startNodeId, endNodeId, relationshipTypeId );
+
+        hasChanges = true;
+    }
+    
+    //HuangTask
+    public void relationshipDoCreate( long id, int relationshipTypeId, long startNodeId, long endNodeId, long timeid )
+    {
+        addedAndRemovedRels().add( id );
+
+        if ( startNodeId == endNodeId )
+        {
+            getOrCreateNodeState( startNodeId ).addRelationship( id, relationshipTypeId, Direction.BOTH );
+        }
+        else
+        {
+            getOrCreateNodeState( startNodeId ).addRelationship( id, relationshipTypeId, Direction.OUTGOING );
+            getOrCreateNodeState( endNodeId ).addRelationship( id, relationshipTypeId, Direction.INCOMING );
+        }
+
+        getOrCreateRelationshipState( id ).setMetaData( startNodeId, endNodeId, relationshipTypeId, timeid );
 
         hasChanges = true;
     }

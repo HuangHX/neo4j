@@ -21,9 +21,18 @@ package examples;
 
 import java.io.File;
 
+import org.neo4j.graphdb.Direction;
+import org.neo4j.graphdb.DynamicLabel;
+import org.neo4j.graphdb.DynamicRelationshipType;
 import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Label;
+import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
+import org.neo4j.graphdb.ResourceIterable;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
+import org.neo4j.graphdb.index.Index;
+import org.neo4j.graphdb.index.IndexHits;
 import org.neo4j.test.TargetDirectory;
 
 public class TakeItForASpin
@@ -31,12 +40,49 @@ public class TakeItForASpin
     public static void main( String[] args )
     {
         File dir = TargetDirectory.forTest( TakeItForASpin.class ).makeGraphDbDir();
-        GraphDatabaseService db = new GraphDatabaseFactory().newEmbeddedDatabase( dir.getAbsolutePath() );
+        GraphDatabaseService db = new GraphDatabaseFactory().newEmbeddedDatabase( "E:\\GitHub\\neo4j\\community\\kernel\\target\\test-data\\examples.TakeItForASpin\\graph-db"); 
+        
         try ( Transaction tx = db.beginTx() )
         {
-            db.createNode();
+            Node node1=db.createNode(-1);
+            Node node2=db.createNode(-1);
+            Relationship rel1=node1.createRelationshipTo(node2, DynamicRelationshipType.withName("knows"),-1);
+            node1.setProperty("name", "huang");
+            node2.setProperty("name", "haixing");
+            node1.addLabel(DynamicLabel.label("label1"));
+        /*   
+            Index<Node> nodeIndex = db.index().forNodes( "nodeIndex" );
+            nodeIndex.add( node1 , "name" , "huang" );
+            nodeIndex.add( node2, "name", "haixing" );
+          */  
             tx.success();
         }
+      
+        try(Transaction tx=db.beginTx())
+        {
+        	@SuppressWarnings("deprecation")
+			Iterable<Node> nodes=db.getAllNodes();
+        	for(Node n:nodes)
+        	{
+        	    Relationship relationships = n.getSingleRelationship( DynamicRelationshipType.withName( "knows" ), Direction.BOTH );
+        	    System.out.print( relationships.getTimeField() );
+        		System.out.print(n.getTimeField());
+        		System.out.print('\n');
+        	}
+        }
+        
+        /*
+        try( Transaction tx = db.beginTx() )
+        {
+            Index< Node > nodeIndex = db.index().forNodes( "nodeIndex" );
+            IndexHits< Node > nodehit = nodeIndex.get( "name", "huang" );
+            IndexHits< Node > nodehit2 = nodeIndex.get( "name", "haixing" );
+            Node node1 = nodehit.next();
+            Node node2 = nodehit2.next();
+            System.out.println( node1.getTimeField() );
+            System.out.println( node2.getTimeField() );
+        }
+  //      */
         finally
         {
             db.shutdown();

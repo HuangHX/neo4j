@@ -319,7 +319,16 @@ public class OperationsFacade implements ReadOperations, DataWriteOperations, Sc
         return dataRead().expand( statement, inputCursor, nodeId, types, expandDirection,
                 relId, relType, direction, startNodeId, neighborNodeId );
     }
+    
+    //HuangTask
+    public long nodeGetTimeField(long nodeid) throws EntityNotFoundException
+    {
+    	statement.assertOpen();
+    	return dataRead().nodeGetTimeField( statement ,nodeid );
+    }
+    
 
+    
     // </DataRead>
 
     // <SchemaRead>
@@ -572,6 +581,13 @@ public class OperationsFacade implements ReadOperations, DataWriteOperations, Sc
         statement.assertOpen();
         return dataWrite().nodeCreate( statement );
     }
+    
+    //HuangTask
+    public long nodeCreate(long timeid)
+    {
+        statement.assertOpen();
+        return dataWrite().nodeCreate(statement , timeid);
+    }
 
     @Override
     public void nodeDelete( long nodeId ) throws EntityNotFoundException
@@ -586,6 +602,21 @@ public class OperationsFacade implements ReadOperations, DataWriteOperations, Sc
     {
         statement.assertOpen();
         return dataWrite().relationshipCreate( statement, relationshipTypeId, startNodeId, endNodeId );
+    }
+    
+    //HuangTask
+    public long relationshipCreate( int relationshipTypeId, long startNodeId, long endNodeId, long timeid )
+            throws RelationshipTypeIdNotFoundKernelException, EntityNotFoundException
+    {
+        statement.assertOpen();
+        return dataWrite().relationshipCreate( statement, relationshipTypeId, startNodeId, endNodeId, timeid );
+    }
+    
+    //HuangTask
+    public long relationshipGetTimeField( long relid ) throws EntityNotFoundException
+    {
+        statement.assertOpen();
+        return dataRead().relationshipGetTimeField( statement , relid );
     }
 
     @Override

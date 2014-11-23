@@ -52,7 +52,7 @@ public class RelationshipCreator
      * @param secondNodeId The id of the end node.
      */
     public void relationshipCreate( long id, int type, long firstNodeId, long secondNodeId,
-            RecordAccessSet recordChangeSet )
+            RecordAccessSet recordChangeSet, long timeid )
     {
         // TODO could be unnecessary to mark as changed here already, dense nodes may not need to change
         NodeRecord firstNode = recordChangeSet.getNodeRecords().getOrLoad( firstNodeId, null ).forChangingLinkage();
@@ -64,6 +64,8 @@ public class RelationshipCreator
         RelationshipRecord record = recordChangeSet.getRelRecords().create( id, null ).forChangingLinkage();
         record.setLinks( firstNodeId, secondNodeId, type );
         record.setInUse( true );
+        //HuangTask
+        record.setTimeField( timeid );
         record.setCreated();
         connectRelationship( firstNode, secondNode, record, recordChangeSet.getRelRecords(),
                 recordChangeSet.getRelGroupRecords() );

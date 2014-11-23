@@ -38,6 +38,7 @@ public class PropertyContainerState extends EntityState
     private VersionedHashMap<Integer, DefinedProperty> addedProperties;
     private VersionedHashMap<Integer, DefinedProperty> changedProperties;
     private VersionedHashMap<Integer, DefinedProperty> removedProperties;
+    
 
     private final Predicate<DefinedProperty> excludePropertiesWeKnowAbout = new Predicate<DefinedProperty>()
     {

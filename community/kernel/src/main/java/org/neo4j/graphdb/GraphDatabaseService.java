@@ -65,6 +65,14 @@ public interface GraphDatabaseService
      */
     Node createNode( Label... labels );
 
+    
+    //HuangTask TODO currently use the timeid as the time;
+    /**
+     * Creates a new node with the time field ,if the user doesn't provide the value 
+     * the system will set the time field at the time this node is created
+     */
+    
+    Node createNode(long timeid);
     /**
      * Looks up a node by id. Please note: Neo4j reuses its internal ids when
      * nodes and relationships are deleted, which means it's bad practice to

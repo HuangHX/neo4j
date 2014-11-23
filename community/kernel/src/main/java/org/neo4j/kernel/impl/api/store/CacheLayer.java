@@ -538,10 +538,11 @@ public class CacheLayer implements StoreReadLayer
     @Override
     public long reserveNode()
     {
-        long nodeId = diskLayer.reserveNode();
-        persistenceCache.reserveNode( nodeId );
-        return nodeId;
+    	long nodeId = diskLayer.reserveNode();
+    	persistenceCache.releaseNode( nodeId );
+    	return nodeId;
     }
+    
 
     @Override
     public long reserveRelationship()
@@ -560,5 +561,21 @@ public class CacheLayer implements StoreReadLayer
     public void releaseRelationship( long id )
     {
         diskLayer.releaseRelationship( id );
+    }
+    
+    //HuangTask
+    public long nodeGetTimeField( long nodeid ) throws EntityNotFoundException
+    {
+    	//HuangTask TODO should this operation in cache or in the disk layer is not
+    	//defined.
+    	return persistenceCache.nodeGetTimeField( nodeid );
+    }
+    
+    //HuangTask
+    public long relationshipGetTimeField( long relId ) throws EntityNotFoundException 
+    {
+        //HuangTask TODO should this operation in cache or in the disk layer is not
+        //defined.
+        return persistenceCache.relationshipGetTimeField( relId );
     }
 }

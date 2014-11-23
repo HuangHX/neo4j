@@ -40,8 +40,12 @@ public enum Record
     NODE_PROPERTY( (byte) 0, 0 ),
     REL_PROPERTY( (byte) 2, 2 ),
 
-    NO_LABELS_FIELD( (byte)0, 0 );
-
+    NO_LABELS_FIELD( (byte)0, 0 ),
+    
+    //HuangTask huangAdded
+    NO_TIMEPROTERTY_FIELD( (byte) -1, -1 );
+    
+    
     public static final byte CREATED_IN_TX = 2;
 
     private byte byteValue;

@@ -35,12 +35,18 @@ public class RelationshipImpl extends ArrayBasedPrimitive
     private final long idAndMore;
     private final int startNodeId;
     private final int endNodeId;
-
-    public RelationshipImpl( long id, long startNodeId, long endNodeId, int typeId )
+    
+    //HuangTask
+    private final long timeField;
+    
+    //HuangTask
+    public RelationshipImpl( long id, long startNodeId, long endNodeId, int typeId, long timeid )
     {
         this.startNodeId = (int) startNodeId;
         this.endNodeId = (int) endNodeId;
         this.idAndMore = (((long)typeId) << 48) | ((startNodeId&0xF00000000L)<<12) | ((endNodeId&0xF00000000L)<<8) | id;
+        //HuangTask
+        this.timeField = timeid;
     }
 
     @Override
@@ -97,5 +103,12 @@ public class RelationshipImpl extends ArrayBasedPrimitive
     {
         return Property.noRelationshipProperty( getId(), key );
     }
+    
+    //HuangTask
+    public long getTimeField()
+    {
+        return this.timeField;
+    }
+    
 
 }

@@ -24,6 +24,8 @@ public final class RelationshipState extends PropertyContainerState
     private long startNode = -1;
     private long endNode = -1;
     private int type = -1;
+    //HuangTask
+    private long timeField=-1;
 
     public RelationshipState( long id )
     {
@@ -35,6 +37,15 @@ public final class RelationshipState extends PropertyContainerState
         this.startNode = startNode;
         this.endNode = endNode;
         this.type = type;
+    }
+    
+    //HuangTask
+    public void setMetaData( long startNode, long endNode, int type, long timeid )
+    {
+        this.startNode = startNode;
+        this.endNode = endNode;
+        this.type = type;
+        this.timeField = timeid;
     }
 
     public long startNode()
@@ -50,5 +61,11 @@ public final class RelationshipState extends PropertyContainerState
     public int type()
     {
         return type;
+    }
+    
+    //HuangTask
+    public long timeField()
+    {
+        return timeField;
     }
 }

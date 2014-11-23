@@ -339,6 +339,10 @@ the relevant Commercial Agreement.
 
     <!-- main dependencies, external -->
     <dependency>
+      <groupId>org.apache.lucene</groupId>
+      <artifactId>lucene-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <optional>true</optional>

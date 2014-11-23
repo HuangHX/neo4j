@@ -19,6 +19,8 @@
  */
 package org.neo4j.graphdb;
 
+import java.util.TimeZone;
+
 import org.neo4j.graphdb.traversal.TraversalDescription;
 import org.neo4j.kernel.Traversal;
 
@@ -274,6 +276,10 @@ public interface Node extends PropertyContainer
      */
     Relationship createRelationshipTo( Node otherNode, RelationshipType type );
     
+    //HuangTask
+    
+    Relationship createRelationshipTo( Node otherNode, RelationshipType type, long timeid );
+    
     /**
      * Returns relationship types which this node has one more relationships
      * for. If this node doesn't have any relationships an empty {@link Iterable}
@@ -496,4 +502,11 @@ public interface Node extends PropertyContainer
      * @return all labels attached to this node.
      */
     Iterable<Label> getLabels();
+    
+    //HuangTask
+    /**
+     * Get the time domain of the node,the set operation should be placed at the node 
+     * create,not in {@link NodeProxy}
+     */
+    long getTimeField();
 }

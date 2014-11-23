@@ -217,6 +217,13 @@ public class LockingStatementOperations implements
     {
         return entityWriteDelegate.nodeCreate( statement );
     }
+    
+    //HuangTask
+    
+    public long nodeCreate( KernelStatement statement ,long timeid )
+    {
+    	return entityWriteDelegate.nodeCreate(statement , timeid);
+    }
 
     @Override
     public long relationshipCreate( KernelStatement state, int relationshipTypeId, long startNodeId, long endNodeId )
@@ -235,7 +242,25 @@ public class LockingStatementOperations implements
         }
         return entityWriteDelegate.relationshipCreate( state, relationshipTypeId, startNodeId, endNodeId );
     }
-
+    
+    //HuangTask
+    public long relationshipCreate( KernelStatement state, int relationshipTypeId, long startNodeId, long endNodeId, long timeid )
+            throws EntityNotFoundException
+    {
+        // Order the locks to lower the risk of deadlocks with other threads adding rels concurrently
+        if(startNodeId < endNodeId)
+        {
+            state.locks().acquireExclusive( ResourceTypes.NODE, startNodeId );
+            state.locks().acquireExclusive( ResourceTypes.NODE, endNodeId );
+        }
+        else
+        {
+            state.locks().acquireExclusive( ResourceTypes.NODE, endNodeId );
+            state.locks().acquireExclusive( ResourceTypes.NODE, startNodeId );
+        }
+        return entityWriteDelegate.relationshipCreate( state, relationshipTypeId, startNodeId, endNodeId, timeid );
+    }
+    
     @Override
     public void relationshipDelete( final KernelStatement state, long relationshipId ) throws EntityNotFoundException
     {

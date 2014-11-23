@@ -781,12 +781,14 @@ public class DiskLayer implements StoreReadLayer
     {
         return nodeStore.nextId();
     }
+    
 
     @Override
     public long reserveRelationship()
     {
         return relationshipStore.nextId();
     }
+    
 
     @Override
     public void releaseNode( long id )
@@ -823,5 +825,17 @@ public class DiskLayer implements StoreReadLayer
             throw new UnsupportedOperationException( "not implemented" );
         }
         return counts.relationshipCount( startLabelId, typeId, endLabelId );
+    }
+    
+    
+    //HuangTask TODO this operation should be in the cahce or in there is not defined.
+    public long nodeGetTimeField(long nodeid) throws EntityNotFoundException
+    {
+    	throw new UnsupportedOperationException();
+    }
+    //HuangTask TODO this operation should be in the cahce or in there is not defined.
+    public long relationshipGetTimeField( long relid ) throws EntityNotFoundException
+    {
+        throw new UnsupportedOperationException();
     }
 }

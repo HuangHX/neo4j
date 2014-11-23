@@ -64,11 +64,27 @@ public class GuardingStatementOperations implements
         return entityWriteDelegate.relationshipCreate( statement, relationshipTypeId, startNodeId, endNodeId );
     }
 
+    //HuangTask
+    public long relationshipCreate( KernelStatement statement, int relationshipTypeId, long startNodeId, long endNodeId, long timeid )
+            throws EntityNotFoundException
+    {
+        guard.check();
+        return entityWriteDelegate.relationshipCreate( statement, relationshipTypeId, startNodeId, endNodeId, timeid );
+    }
+    
     @Override
     public long nodeCreate( KernelStatement statement )
     {
         guard.check();
         return entityWriteDelegate.nodeCreate( statement );
+    }
+    
+    //HuangTask
+    
+    public long nodeCreate( KernelStatement statement, long timeid )
+    {
+    	guard.check();
+    	return entityWriteDelegate.nodeCreate(statement, timeid);
     }
 
     @Override
@@ -337,5 +353,19 @@ public class GuardingStatementOperations implements
         guard.check();
         return entityReadDelegate.expand( statement, inputCursor, nodeId, types, expandDirection,
                 relId, relType, direction, startNodeId, neighborNodeId );
+    }
+    
+    //HuangTask
+    public long nodeGetTimeField( KernelStatement state, long nodeId) throws EntityNotFoundException
+    {
+    	guard.check();
+    	return entityReadDelegate.nodeGetTimeField(state, nodeId);
+    }
+    
+  //HuangTask
+    public long relationshipGetTimeField( KernelStatement state, long relId) throws EntityNotFoundException
+    {
+        guard.check();
+        return entityReadDelegate.relationshipGetTimeField(state, relId);
     }
 }
