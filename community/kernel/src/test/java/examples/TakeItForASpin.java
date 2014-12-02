@@ -50,11 +50,11 @@ public class TakeItForASpin
             node1.setProperty("name", "huang");
             node2.setProperty("name", "haixing");
             node1.addLabel(DynamicLabel.label("label1"));
-        /*   
+          
             Index<Node> nodeIndex = db.index().forNodes( "nodeIndex" );
             nodeIndex.add( node1 , "name" , "huang" );
             nodeIndex.add( node2, "name", "haixing" );
-          */  
+           
             tx.success();
         }
       
@@ -71,7 +71,7 @@ public class TakeItForASpin
         	}
         }
         
-        /*
+  //      /*
         try( Transaction tx = db.beginTx() )
         {
             Index< Node > nodeIndex = db.index().forNodes( "nodeIndex" );
